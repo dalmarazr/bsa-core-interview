@@ -32,16 +32,53 @@ describe('Car API', () => {
         ]);
         const response = await request(app).get('/cars'); 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual([
+        expect(response.body).toEqual(
             { 
-                id: 1,
-                make: 'Car 1' ,
-                model: 'Model 1',
-                year: 2021,
-                color: 'Red',
-                vin: '1234'
+                message: 'Unfiltered results',
+                count: 1,
+                data: [
+                    { 
+                        id: 1,
+                        make: 'Car 1' ,
+                        model: 'Model 1',
+                        year: 2021,
+                        color: 'Red',
+                        vin: '1234'
+                    }
+                ]
             }
-        ]);
+        );
+    });
+
+
+    it('should get status code 404 for a query with no results', async () => {
+        database.getElementsByFields.mockReturnValue(null);
+        const response = await request(app)
+        .get('/cars')
+        .query({ make: 'Cadillac', color: 'Pink' }); 
+        
+        expect(response.status).toBe(404);
+        expect(response.body).toEqual(
+            { 
+                message: 'Query return 0 results',
+                count: 0,
+                data: []
+            }
+        );
+    });
+
+    it('should get status code 400 for a query with a unknown property', async () => {
+        database.getElementsByFields.mockReturnValue(null);
+        const response = await request(app)
+        .get('/cars')
+        .query({ make: 'Cadillac', color: 'Pink' , unknown: 'unknown'}); 
+        
+        expect(response.status).toBe(400);
+        expect(response.body).toEqual(
+            { 
+                message: '\"unknown\" is not allowed',
+            }
+        );
     });
 
     it('should get a car by ID', async () => {
@@ -120,10 +157,7 @@ describe('Car API', () => {
                 make: 'Car 2',
                 vin: '780'
             });
-        console.log( {
-            status: patchResponse.status,
-            body: patchResponse.body
-        })
+ 
         expect(patchResponse.status).toBe(404);
         expect(patchResponse.body).toEqual({
             message: 'Element not found',

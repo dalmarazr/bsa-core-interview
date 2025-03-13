@@ -4,7 +4,6 @@ async function validateSchema(schema, body) {
         return value
     }
     catch (err) {
-        console.log("🚀 ~ validateSchema ~ err:", err)
         return {
             error: err
         }

@@ -1,9 +1,11 @@
 const {validateSchema} = require("../schemas/validation")
 
-function validationMiddleware(schema) {
+function validationMiddleware(schema, requestPart="body") {
     return async (req, res, next) => {
-        const {body} = req
-        const validationResult = await validateSchema(schema, body)
+        const {body, query} = req
+        const currentElementToValidate = requestPart == "body" ? body : query
+       
+        const validationResult = await validateSchema(schema,currentElementToValidate )
 
         if(validationResult.error) {
             res.status(400).send({
@@ -16,6 +18,7 @@ function validationMiddleware(schema) {
     }
 }
 
+
 module.exports = {
-    validationMiddleware
+    validationMiddleware,
 }

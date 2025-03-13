@@ -10,8 +10,34 @@ const app = express();
 app.use(morgan(config.logs.format));
 app.use(express.json());
 
-app.get("/cars", (req, res) => {
-    res.send(database.getAll());
+app.get("/cars", validationMiddleware(carSchemaPartial, 'params'), (req, res) => {
+    const { query } = req;
+    if (Object.keys(query).length === 0) {
+        res.send({
+            message: "Unfiltered results",
+            count: database.getAll().length,
+            data: database.getAll(),
+
+        });
+        return;
+    }
+    const elements = database.getElementsByFields(query);
+    if (!elements) {
+        res.status(404).send({
+            message: "Query return 0 results",
+            count: 0,
+            data: [],
+        });
+        return; 
+    }
+
+    res.send(
+        {
+            message: "Filtered results",
+            count: elements.length,
+            data: elements,
+        }
+    );
 });
 app.get("/cars/:carId", (req, res) => {
     const { params } = req;

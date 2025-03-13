@@ -6,6 +6,17 @@ class Database {
     getOne(id) {  
        return this.temporalDatabase.find((currentElement)=> currentElement.id == id)
     }
+    getElementsByFields(query) {
+      return this.temporalDatabase.filter((currentElement)=> {
+        for (const key in query) {
+          if (currentElement[key] !== query[key]) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+    }
     getAll() {  
         return this.temporalDatabase
     }

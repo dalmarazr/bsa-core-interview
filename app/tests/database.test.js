@@ -17,6 +17,15 @@ describe('Database', () => {
         expect(car.id).toBe(1);
     });
 
+    it('should get a car by filtering by fields', async () => {
+        const query = {
+            make: 'Cadillac',
+            color: 'Pink'
+        }
+        const cars = database.getElementsByFields(query);
+        expect(cars.length).toBe(2);
+    });
+
     it('should create a new car', async () => {
         const newCarId = database.create({
             make: 'Car 2',
