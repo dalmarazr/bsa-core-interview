@@ -27,7 +27,7 @@ This project contains a CAR API built with Node.js and the Express.js library, u
     #### Clone the repository:
 
     ```sh
-    git clone <repository-url>
+    git clone https://github.com/dalmarazr/bsa-core-interview
     ```
 
     #### Install dependencies:
