@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "csv-parse": "^5.6.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "morgan": "^1.10.0",
+    "supertest": "^7.0.0"
+  },
+  "scripts": {
+    "start": "node app/index.js",
+    "dev": "node --watch app/index.js",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "name": "interview",
+  "version": "1.0.0",
+  "description": "Interview assessment",
+  "main": "app/index.js",
+  "author": "David Almaraz Rivera",
+  "license": "ISC"
+}
